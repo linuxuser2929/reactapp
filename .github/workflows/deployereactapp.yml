@@ -1,7 +1,7 @@
 name: deploye-app
 
 on: 
-  pull_request:
+  push:
     branches:
       - main
     paths-ignore:
@@ -57,20 +57,28 @@ jobs:
             - name: Build Project
               run: npm run build
             - name: upload artifact
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-pages-artifact@v3
               with: 
-                name: dist-files
+                name: github-pages
                 path: dist
 
     deploye:
         needs: build
         runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+        permissions:
+          pages: write      # to deploy to Pages
+          id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+        environment:
+          name: github-pages
+          url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
         steps:
-            - name: Download artifact
-              uses: actions/download-artifact@v5
-              with: 
-                name: dist-files
-                path: dist 
-            - name: Deploye
-              run: echo "Deploye successfull"
-           
+           - name: Deploy to GitHub Pages
+             id: deployment
+             uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+             with:
+                token: ${{secrets.GITHUB_TOKEN}}
