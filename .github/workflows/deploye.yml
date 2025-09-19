@@ -21,4 +21,22 @@ jobs:
               run: npm ci
             - name: Test case run
               run: npm run test
-
+   
+    deploye:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: clone project 
+              uses: actions/checkout@v4
+            - name: Installed Nodejs
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            - name: print version
+              run: node -v
+            - name: dependencies Install
+              run: npm ci
+            - name: Build Project
+              run: npm run build
+            - name: Deploye
+              run: echo "Deploye Successfully"
+                 
