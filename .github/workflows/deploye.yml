@@ -10,7 +10,7 @@ jobs:
             #   run: |
             #     echo "Cloning repo...."
             #     git clone https://github.com/${{github.repository}}.git
-              uses: actions/chackout@v4
+              uses: actions/checkout@v4
             - name: Installed Nodejs
               uses: actions/setup-node@v4
               with:
